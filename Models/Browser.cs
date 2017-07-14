@@ -13,7 +13,7 @@ namespace Models
     {
         private IWebDriver WebDriver { get; set; }
         private const string WEBDRIVER_FOLDER = "WebDrivers";
-        private string PATH_IE = Path.Combine(Environment.CurrentDirectory, WEBDRIVER_FOLDER);
+        private string WEBDRIVER_PATH = Path.Combine(Environment.CurrentDirectory, WEBDRIVER_FOLDER);
 
         public Browser(Browsers browserName)
         {
@@ -24,19 +24,19 @@ namespace Models
         {
             if (browserName == "CHROME")
             {
-                return new ChromeDriver("");
+                return new ChromeDriver(WEBDRIVER_PATH);
             }
             else if(browserName == "EDGE")
             {
-                return new EdgeDriver("");
+                return new EdgeDriver(WEBDRIVER_PATH);
             }
             else if (browserName == "EXPLORER")
             {
-                return new InternetExplorerDriver(PATH_IE);
+                return new InternetExplorerDriver(WEBDRIVER_PATH);
             } 
             else
             {
-                return new PhantomJSDriver("");
+                return new PhantomJSDriver(WEBDRIVER_PATH);
             }
         }
 

@@ -12,7 +12,7 @@ namespace PersonalFinancialReports
     {
         static void Main(string[] args)
         {
-            using (Browser navigator = new Browser(Browsers.EXPLORER))
+            using (Browser navigator = new Browser(Browsers.CHROME))
             {
                 navigator.GoToUrl("https://bancanet.banamex.com/");
                 navigator.WaitSeconds(5);
