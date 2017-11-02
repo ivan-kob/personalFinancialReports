@@ -60,5 +60,9 @@
   </ItemGroup>
   <ItemGroup>
     <Build Include="Accounts.sql" />
+    <Build Include="Transaction.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="PersonalFinancialReportsDB.refactorlog" />
   </ItemGroup>
 </Project>
