@@ -18,48 +18,35 @@ namespace DataAccessLayer
 
             using (stream)
             {
-                List<string> columnNamesList = new List<string>();
+                List<string> columnNamesList = GetColumnNames(stream);
+                List<string> csvContentLines = GetCsvCsvContentLines(stream);
 
-                if (stream.EndOfStream)
-                    throw new EndOfStreamException("We reached the end of the stream without processing it");
-                else
+                foreach (string csvContentLine in csvContentLines)
                 {
-                    columnNamesList = stream.ReadLine()
-                        .Replace("\"",string.Empty)
-                        .Split(',')
-                        .ToList();
-                }
-
-                while (!stream.EndOfStream){
-
-                    string[] rowValues = stream
-                        .ReadLine()
-                        .Replace("\"",string.Empty)
-                        .Split(',');
-
+                    string[] csvContentLineSplited = csvContentLine.Split(',');
                     T genericObject = Activator.CreateInstance<T>();
                     PropertyInfo[] genericObjectProperties = genericObject.GetType().GetProperties();
 
                     foreach (PropertyInfo property in genericObjectProperties)
                     {
-                        
+
                         if (columnNamesList.Contains(property.Name))
                         {
                             int propertyIndex = columnNamesList.IndexOf(property.Name);
-                            string rowValueBeforeConvert = rowValues[propertyIndex];
+                            string rowValueBeforeConvert = csvContentLineSplited[propertyIndex];
                             object rowValueAfterConvert = null;
 
                             if (!string.IsNullOrEmpty(rowValueBeforeConvert))
                             {
                                 try
                                 {
-                                    rowValueAfterConvert = Convert.ChangeType(rowValues[propertyIndex], property.PropertyType);
+                                    rowValueAfterConvert = Convert.ChangeType(csvContentLineSplited[propertyIndex], property.PropertyType);
                                 }
                                 catch (Exception ex)
                                 {
                                     Console.WriteLine(ex);
                                 }
-                                
+
                             }
 
                             property.SetValue(genericObject, rowValueAfterConvert);
@@ -71,6 +58,36 @@ namespace DataAccessLayer
             }
 
             return list;
+        }
+
+        /*These two method might be abstracted because we are doing the same in the first part of the logic*/
+        public static List<string> GetColumnNames(StreamReader stream)
+        {
+            int INITIAL_STREAM_POSITION = 0;
+            if (stream == null)
+                throw new ArgumentNullException("The stream is null");
+            if (stream.EndOfStream)
+                stream.BaseStream.Position = INITIAL_STREAM_POSITION;
+
+            return stream.ReadLine().Replace("\"","").Split(',').ToList();
+        }
+
+        public static List<string> GetCsvCsvContentLines(StreamReader stream)
+        {
+            int INITIAL_STREAM_POSITION = 0;
+            List<string> csvContentSeparatedByLine = new List<string>();
+            if (stream == null)
+                throw new ArgumentNullException("The stream is null");
+            if (stream.EndOfStream)
+                stream.BaseStream.Position = INITIAL_STREAM_POSITION;
+
+
+            while (!stream.EndOfStream)
+            {
+                csvContentSeparatedByLine.Add(stream.ReadLine().Replace("\"", ""));
+            }
+
+            return csvContentSeparatedByLine;
         }
     }
 }
