@@ -60,7 +60,8 @@ namespace BusinessLogicLayer
             return list;
         }
 
-        /*These two method might be abstracted because we are doing the same in the first part of the logic*/
+        
+        //TODO Refactor these two methods, they are sharing the same base of code
         private static List<string> GetColumnNames(StreamReader stream)
         {
             int INITIAL_STREAM_POSITION = 0;
@@ -72,12 +73,14 @@ namespace BusinessLogicLayer
             return stream.ReadLine().Replace("\"","").Split(',').ToList();
         }
 
+        
         private static List<string> GetCsvCsvContentLines(StreamReader stream)
         {
             int INITIAL_STREAM_POSITION = 0;
             List<string> csvContentSeparatedByLine = new List<string>();
             if (stream == null)
                 throw new ArgumentNullException("The stream is null");
+            //TODO If the csv contains only the columns this code will take those columns as values
             if (stream.EndOfStream)
                 stream.BaseStream.Position = INITIAL_STREAM_POSITION;
 
