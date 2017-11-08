@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
 using System.IO;
-using DataAccessLayer;
 using Models;
 
 namespace BusinessLogicLayer
@@ -22,7 +21,9 @@ namespace BusinessLogicLayer
 
         public static void ReadFile()
         {
-            List<Transaction> genericList = CsvMapper.GetListFromStream<Transaction>(new StreamReader(GetCsvFileLocation()));
+            string fileLocation = GetCsvFileLocation();
+            StreamReader fileStream = GetFileStream(fileLocation);
+            List<Transaction> genericList = CsvMapper.GetListFromStream<Transaction>(fileStream);
             /*For testing purposes*/
             genericList.ForEach(x => Console.WriteLine($"Date: {x.Date}, Desc: {x.Description}, Credit: {x.Credit}, Balance: {x.Balance}"));
             Console.Read();
@@ -35,6 +36,12 @@ namespace BusinessLogicLayer
                 return $@"{CsvFolder}\test.csv";
             else
                 return @"C:\Users\Edwin Lap\Documents\Personal\PersonalWork\personalFinancialReports\csvFolder\test.csv";
+        }
+
+        private static StreamReader GetFileStream(string fileLocation) {
+
+            return new StreamReader(fileLocation);
+
         }
     }
 }

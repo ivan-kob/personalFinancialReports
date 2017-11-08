@@ -6,13 +6,13 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccessLayer
+namespace BusinessLogicLayer
 {
     public static class CsvMapper
     {
         public static List<T> GetListFromStream<T>(StreamReader stream)
         {
-            if (stream == null) throw new ArgumentException("Stream argument cannot be null");
+            if (stream == null) throw new ArgumentNullException("Stream argument cannot be null");
 
             List<T> list = new List<T>();
 
@@ -61,7 +61,7 @@ namespace DataAccessLayer
         }
 
         /*These two method might be abstracted because we are doing the same in the first part of the logic*/
-        public static List<string> GetColumnNames(StreamReader stream)
+        private static List<string> GetColumnNames(StreamReader stream)
         {
             int INITIAL_STREAM_POSITION = 0;
             if (stream == null)
@@ -72,7 +72,7 @@ namespace DataAccessLayer
             return stream.ReadLine().Replace("\"","").Split(',').ToList();
         }
 
-        public static List<string> GetCsvCsvContentLines(StreamReader stream)
+        private static List<string> GetCsvCsvContentLines(StreamReader stream)
         {
             int INITIAL_STREAM_POSITION = 0;
             List<string> csvContentSeparatedByLine = new List<string>();
