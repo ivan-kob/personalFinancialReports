@@ -80,10 +80,14 @@ namespace BusinessLogicLayer
             List<string> csvContentSeparatedByLine = new List<string>();
             if (stream == null)
                 throw new ArgumentNullException("The stream is null");
-            //TODO If the csv contains only the columns this code will take those columns as values
+            
             if (stream.EndOfStream)
                 stream.BaseStream.Position = INITIAL_STREAM_POSITION;
 
+            //Check after read the first line is end of stream, if so return the empty list
+            stream.ReadLine();
+            if (stream.EndOfStream)
+                return csvContentSeparatedByLine;
 
             while (!stream.EndOfStream)
             {

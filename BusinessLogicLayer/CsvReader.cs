@@ -19,14 +19,14 @@ namespace BusinessLogicLayer
         private static string CsvFolder => ConfigurationManager.AppSettings["CSVFolder"];
         private static bool ReleaseMode => Convert.ToBoolean(ConfigurationManager.AppSettings["ReleaseMode"]);
 
-        public static void ReadFile()
+        public static List<T> ReadFile<T>()
         {
             string fileLocation = GetCsvFileLocation();
             StreamReader fileStream = GetFileStream(fileLocation);
-            List<Transaction> genericList = CsvMapper.GetListFromStream<Transaction>(fileStream);
+            return CsvMapper.GetListFromStream<T>(fileStream);
             /*For testing purposes*/
-            genericList.ForEach(x => Console.WriteLine($"Date: {x.Date}, Desc: {x.Description}, Credit: {x.Credit}, Balance: {x.Balance}"));
-            Console.Read();
+            //genericList.ForEach(x => Console.WriteLine($"Date: {x.Date}, Desc: {x.Description}, Credit: {x.Credit}, Balance: {x.Balance}"));
+            //Console.Read();
             
         }
 

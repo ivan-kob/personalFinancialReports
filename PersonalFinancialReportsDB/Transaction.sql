@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[Transaction]
 (
-	[TransactionID] INT NOT NULL PRIMARY KEY, 
+	[TransactionID] INT NOT NULL PRIMARY KEY IDENTITY, 
     [AccountID] INT NOT NULL, 
     [Date] DATE NULL, 
     [Description] NVARCHAR(500) NULL, 
